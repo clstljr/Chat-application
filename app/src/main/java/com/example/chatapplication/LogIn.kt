@@ -13,7 +13,6 @@ class LogIn : AppCompatActivity() {
     private lateinit var edtPassword : EditText
     private lateinit var btnLogin : Button
     private lateinit var btnSignup : Button
-
     private lateinit var mAuth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +32,17 @@ class LogIn : AppCompatActivity() {
 
         }
 
+        btnLogin.setOnClickListener {
+            val email = edtEmail.text.toString()
+            val password = edtPassword.text.toString()
+
+            login(email, password)
+        }
+
+    }
+
+    private fun login(email: String, password: String){
+        //logic for logging in
 
     }
 }
