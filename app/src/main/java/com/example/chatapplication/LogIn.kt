@@ -20,6 +20,8 @@ class LogIn : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
 
+        mAuth = FirebaseAuth.getInstance()
+
         edtEmail = findViewById(R.id.edt_Email)
         edtPassword = findViewById(R.id.edt_Password)
         btnLogin = findViewById(R.id.btn_login)
