@@ -13,7 +13,7 @@
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:src="@drawable/YapYap_Icon" />
+        android:src="@drawable/yapyap_icon" />
     
     <EditText
         android:id="@+id/edt_Email"
@@ -60,11 +60,5 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/btn_background"
         android:textColor="@color/white"/>
-
-
-
-
-
-
 
 </RelativeLayout>
