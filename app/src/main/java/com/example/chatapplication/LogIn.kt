@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
 
 class LogIn : AppCompatActivity() {
 
@@ -15,6 +16,8 @@ class LogIn : AppCompatActivity() {
     private lateinit var edtPassword : EditText
     private lateinit var btnLogin : Button
     private lateinit var btnSignup : Button
+
+    private lateinit var mAuth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
