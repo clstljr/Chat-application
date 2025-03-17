@@ -6,10 +6,10 @@ class User {
     var uid : String? = null
 
     constructor(){}
+
     constructor(name: String?, email: String?, uid: String?){
         this.name = name
         this.email = email
         this.uid = uid
-
     }
 }
