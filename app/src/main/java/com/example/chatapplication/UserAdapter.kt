@@ -26,7 +26,7 @@ class UserAdapter(val context: Context, val userList: ArrayList<User>):
             holder.textName.text = currentUser.name
     }
 
-    class UserViewHolder:(ItemView: View) : RecyclerView.ViewHolder(itemView){
+    class UserViewHolder:(itemView: View) : RecyclerView.ViewHolder(itemView){
         val textName = itemView.findViewById<TextView>(R.id.txt_name)
     }
 }
