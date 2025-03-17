@@ -30,21 +30,23 @@ class SignUp : AppCompatActivity() {
         btnSignup = findViewById(R.id.btn_signup)
 
         btnSignup.setOnClickListener {
+            val name = edtName.text.toString()
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
 
-            signup(email, password)
+            signup(name,email, password)
 
         }
 
     }
 
-    private fun signup(email: String, password: String){
+    private fun signup(name: String, email: String, password: String){
         // logic for creating user
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // code for jumping to home
+                    addUserToDatabase(name,email,mAuth.currentUser.uid!!)
                     val intent = Intent(this@SignUp, MainActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -53,6 +55,11 @@ class SignUp : AppCompatActivity() {
                 }
             }
     }
+
+    private fun  addUserToDatabase(name: String, email: String,uid : String){
+
+    }
+
 }
 
 
