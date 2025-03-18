@@ -29,7 +29,7 @@
             android:layout_height="50dp"
             android:hint="Type a message"
             android:layout_marginLeft="10dp"
-
+            android:background="@drawable/message_box_background"
             android:layout_weight="90"/>
 
         <ImageView
