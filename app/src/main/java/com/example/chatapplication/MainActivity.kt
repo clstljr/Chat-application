@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         userList = ArrayList()
         adapter = UserAdapter(this, userList)
 
+
+
     }
 
     override fun onCreatePanelMenu(featureId: Int, menu: Menu): Boolean {
