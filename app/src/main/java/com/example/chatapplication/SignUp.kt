@@ -51,7 +51,6 @@ class SignUp : AppCompatActivity() {
                     // code for jumping to home
                     addUserToDatabase(name,email, mAuth.currentUser?.uid!!)
                     val intent = Intent(this@SignUp, MainActivity::class.java)
-                    finish()
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -60,7 +59,7 @@ class SignUp : AppCompatActivity() {
             }
     }
 
-    private fun addUserToDatabase(name: String, email: String, uid : String){
+    private fun  addUserToDatabase(name: String, email: String,uid : String){
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("user").child(uid).setValue(User(name,email,uid))
     }
