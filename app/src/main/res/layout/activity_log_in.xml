@@ -16,8 +16,7 @@
         app:civ_border_color="#FF000000"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:layout_marginBottom="20dp"
-        />
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/welcomegreetings"
@@ -32,14 +31,15 @@
         android:textSize="50dp"
         android:textStyle="bold" />
 
-    
     <EditText
         android:id="@+id/edt_Email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/welcomegreetings"
+        android:drawableLeft="@drawable/email_icon"
+        android:drawablePadding="10dp"
         android:hint="Email"
-        android:paddingLeft="13dp"
+        android:paddingLeft="15dp"
         android:background="@drawable/edt_background"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -50,8 +50,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/edt_Email"
+        android:drawableLeft="@drawable/password_icon"
+        android:drawablePadding="10dp"
         android:hint="Password"
-        android:paddingLeft="13dp"
+        android:paddingLeft="15dp"
         android:background="@drawable/edt_background"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -80,7 +82,5 @@
         android:background="@drawable/btn_background"
         android:text="SIGN UP"
         android:textColor="@color/white" />
-
-
 
 </RelativeLayout>
