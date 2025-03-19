@@ -12,25 +12,25 @@ class UserAdapter(val context: Context, val userList: ArrayList<User>):
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-            val view: View = LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
-            return UserViewHolder(view)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
+        return UserViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-            return userList.size
+        return userList.size
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-            val currentUser = userList[position]
+        val currentUser = userList[position]
 
-            holder.textName.text = currentUser.name
+        holder.textName.text = currentUser.name
 
-            holder.itemView.setOnClickListener {
-                val intent = Intent(context, ChatActivity::class.java)
-                intent.putExtra("name", currentUser.name)
-                intent.putExtra("uid", currentUser.uid)
-                context.startActivity(intent)
-            }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra("name", currentUser.name)
+            intent.putExtra("uid", currentUser.uid)
+            context.startActivity(intent)
+        }
     }
 
     class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

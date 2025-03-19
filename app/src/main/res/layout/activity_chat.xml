@@ -8,6 +8,7 @@
     tools:context=".ChatActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="85dp"
         android:id="@+id/chatRecyclerView"
         android:layout_above="@id/linearLayout"
         android:layout_alignParentTop="true"
@@ -40,13 +41,6 @@
             android:layout_height="50dp"
             android:src="@drawable/send_icon_yapyapp"
             android:layout_weight="20"/>
-
-
-
-
-
-
-
 
     </LinearLayout>
 </RelativeLayout>
