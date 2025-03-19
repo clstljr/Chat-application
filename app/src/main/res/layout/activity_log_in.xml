@@ -18,16 +18,28 @@
         android:layout_marginTop="70dp"
         android:layout_marginBottom="20dp"
         />
+
+    <TextView
+        android:id="@+id/welcomegreetings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Welcome to YapYap"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="50dp"
+        android:textStyle="bold" />
+
     
     <EditText
         android:id="@+id/edt_Email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/app_logo"
-        android:drawableLeft="@drawable/baseline_email_24"
-        android:drawablePadding="10dp"
+        android:layout_below="@id/welcomegreetings"
         android:hint="Email"
-        android:paddingLeft="15dp"
+        android:paddingLeft="13dp"
         android:background="@drawable/edt_background"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -38,10 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/edt_Email"
-        android:drawableLeft="@drawable/baseline_lock_24"
-        android:drawablePadding="10dp"
         android:hint="Password"
-        android:paddingLeft="15dp"
+        android:paddingLeft="13dp"
         android:background="@drawable/edt_background"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -52,21 +62,25 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/edt_Password"
-        android:layout_centerHorizontal="true"
-        android:text="LOG IN"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/btn_background"
-        android:textColor="@color/white"/>
+        android:text="LOG IN"
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_login"
-        android:layout_centerHorizontal="true"
-        android:text="SIGN UP"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/edt_Password"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/btn_background"
-        android:textColor="@color/white"/>
+        android:text="SIGN UP"
+        android:textColor="@color/white" />
+
+
 
 </RelativeLayout>
