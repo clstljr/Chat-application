@@ -70,14 +70,27 @@ class ChatActivity : AppCompatActivity() {
         //adding the message to database
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
-            val messageObject = Message(message, senderUid)
+            val senderUid = FirebaseAuth.getInstance().currentUser?.uid
 
-            mDbRef.child("chats").child(senderRoom!!).child("messages").push()
-                .setValue(messageObject).addOnSuccessListener {
-                    mDbRef.child("chats").child(receiverRoom!!).child("messages").push().
-                    setValue(messageObject)
+            if (!message.isEmpty() && senderUid != null) {
+                // Fetch sender's profile from Firebase
+                mDbRef.child("user").child(senderUid).get().addOnSuccessListener {
+                    val senderProfile = it.child("profileImage").value as? String ?: ""
+
+                    val messageObject = Message(message, senderUid, senderProfile) // Include profile
+
+                    // Save to senderRoom
+                    mDbRef.child("chats").child(senderRoom!!).child("messages").push()
+                        .setValue(messageObject).addOnSuccessListener {
+                            // Save to receiverRoom
+                            mDbRef.child("chats").child(receiverRoom!!).child("messages").push()
+                                .setValue(messageObject)
+                        }
                 }
-            messageBox.setText("")
+                messageBox.setText("")
+            }
         }
+
+
     }
 }

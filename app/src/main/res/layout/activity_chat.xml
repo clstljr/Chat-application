@@ -39,7 +39,7 @@
             android:id="@+id/sentButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/baseline_arrow_circle_right_24"
+            android:src="@drawable/send_button"
             android:layout_weight="20"/>
 
     </LinearLayout>
