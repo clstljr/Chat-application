@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-
 class SignUp : AppCompatActivity() {
 
     private lateinit var edtName: EditText
@@ -44,6 +43,8 @@ class SignUp : AppCompatActivity() {
         imgProfile = findViewById(R.id.app_logo)
         btnGoback = findViewById(R.id.btn_goback)
 
+        imgProfile.setImageResource(R.drawable.default_profile)
+
         btnUploadImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -59,7 +60,7 @@ class SignUp : AppCompatActivity() {
         }
 
         btnGoback.setOnClickListener {
-            val intent = Intent(this, LogIn ::class.java)
+            val intent = Intent(this, LogIn::class.java)
             startActivity(intent)
         }
     }
@@ -84,14 +85,27 @@ class SignUp : AppCompatActivity() {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
+    private fun encodeDrawableToBase64(drawableId: Int): String {
+        val drawable = resources.getDrawable(drawableId, null)
+        val bitmap = (drawable as android.graphics.drawable.BitmapDrawable).bitmap
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        val byteArray = outputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
     private fun signup(name: String, email: String, password: String, profileImage: String?) {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val uid = mAuth.currentUser?.uid!!
-                    addUserToDatabase(name, email, uid, profileImage)
+
+                    val finalProfileImage = profileImage ?: encodeDrawableToBase64(R.drawable.default_profile)
+
+                    addUserToDatabase(name, email, uid, finalProfileImage)
+
                     startActivity(Intent(this@SignUp, LogIn::class.java))
-                    Toast.makeText(this@SignUp, "Kindly please login your new account", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUp, "Kindly please log in to your new account", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@SignUp, "Some error occurred", Toast.LENGTH_SHORT).show()
                 }

@@ -1,17 +1,17 @@
 package com.example.chatapplication
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.example.chatapplication.utils.FirebaseHelper
+import com.example.chatapplication.utils.ImageUtils
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class ChatActivity : AppCompatActivity() {
 
@@ -20,24 +20,21 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var sendButton: ImageView
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var messageList: ArrayList<Message>
-    private lateinit var mDbRef: DatabaseReference
     private lateinit var btnGoback: ImageView
     private lateinit var senderProfile: ImageView
     private lateinit var senderUsername: TextView
 
-    var receiverRoom: String? = null
-    var senderRoom: String? = null
+    private var receiverRoom: String? = null
+    private var senderRoom: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-
         supportActionBar?.hide()
 
         val name = intent.getStringExtra("name")
         val receiverUid = intent.getStringExtra("uid")
-        val senderUid = FirebaseAuth.getInstance().currentUser?.uid
-        mDbRef = FirebaseDatabase.getInstance().getReference()
+        val senderUid = FirebaseHelper.auth.currentUser?.uid
 
         senderRoom = receiverUid + senderUid
         receiverRoom = senderUid + receiverUid
@@ -55,71 +52,46 @@ class ChatActivity : AppCompatActivity() {
         chatRecyclerView.adapter = messageAdapter
 
         btnGoback.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
         // Fetch sender profile and username
-        if (receiverUid != null) {
-            mDbRef.child("user").child(receiverUid).get().addOnSuccessListener {
-                val name = it.child("name").value as? String
+        receiverUid?.let { uid ->
+            FirebaseHelper.database.child("user").child(uid).get().addOnSuccessListener {
+                senderUsername.text = it.child("name").value as? String ?: "Unknown"
                 val profileImage = it.child("profileImage").value as? String
-
-                senderUsername.text = name ?: "Unknown"
-
-                if (!profileImage.isNullOrEmpty()) {
-                    Glide.with(this)
-                        .asBitmap()
-                        .load(decodeBase64(profileImage))
-                        .into(senderProfile)
-                } else {
-                    senderProfile.setImageResource(R.drawable.default_profile) // Default profile
-                }
+                ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
+                    Glide.with(this).load(bitmap).into(senderProfile)
+                } ?: senderProfile.setImageResource(R.drawable.default_profile)
             }
         }
 
-        // Logic for adding data to recycler view
-        mDbRef.child("chats").child(senderRoom!!).child("messages")
+        // Load messages
+        FirebaseHelper.database.child("chats").child(senderRoom!!).child("messages")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     messageList.clear()
-                    for (postSnapshot in snapshot.children) {
-                        val message = postSnapshot.getValue(Message::class.java)
-                        messageList.add(message!!)
-                    }
+                    snapshot.children.mapNotNullTo(messageList) { it.getValue(Message::class.java) }
                     messageAdapter.notifyDataSetChanged()
                 }
-
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        // Adding the message to database
+        // Send message
         sendButton.setOnClickListener {
             val message = messageBox.text.toString()
-            val senderUid = FirebaseAuth.getInstance().currentUser?.uid
-
             if (message.isNotEmpty() && senderUid != null) {
-                // Fetch sender's profile from Firebase
-                mDbRef.child("user").child(senderUid).get().addOnSuccessListener {
+                FirebaseHelper.database.child("user").child(senderUid).get().addOnSuccessListener {
                     val senderProfile = it.child("profileImage").value as? String ?: ""
-
-                    val messageObject = Message(message, senderUid, senderProfile) // Include profile
-
-                    // Save to senderRoom
-                    mDbRef.child("chats").child(senderRoom!!).child("messages").push()
+                    val messageObject = Message(message, senderUid, senderProfile)
+                    FirebaseHelper.database.child("chats").child(senderRoom!!).child("messages").push()
                         .setValue(messageObject).addOnSuccessListener {
-                            // Save to receiverRoom
-                            mDbRef.child("chats").child(receiverRoom!!).child("messages").push()
+                            FirebaseHelper.database.child("chats").child(receiverRoom!!).child("messages").push()
                                 .setValue(messageObject)
                         }
                 }
                 messageBox.setText("")
             }
         }
-    }
-
-    private fun decodeBase64(encodedImage: String): Bitmap {
-        val decodedBytes = Base64.decode(encodedImage, Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
     }
 }

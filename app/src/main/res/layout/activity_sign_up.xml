@@ -15,7 +15,6 @@
         android:background="@drawable/login_bg_view">
     </View>
 
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/btn_goback"
         android:layout_width="50dp"
@@ -35,7 +34,6 @@
         android:textSize="30dp"
         android:textStyle="bold"
         android:layout_marginTop="14dp"/>
-
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/app_logo"
@@ -120,8 +118,5 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/btn_background"
         android:textColor="@color/white"/>
-
-
-
 
 </RelativeLayout>

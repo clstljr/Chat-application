@@ -3,7 +3,7 @@ package com.example.chatapplication
 class Message {
     var message: String? = null
     var senderId: String? = null
-    var senderProfile: String? = null // New field for profile picture
+    var senderProfile: String? = null
 
     constructor() {}
 

@@ -1,41 +1,36 @@
 package com.example.chatapplication
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
+import com.bumptech.glide.Glide
+import com.example.chatapplication.utils.FirebaseHelper
+import com.example.chatapplication.utils.ImageUtils
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.bumptech.glide.Glide
-import android.widget.ImageView
-import android.widget.TextView
-import android.util.Base64
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var userList: ArrayList<User>
     private lateinit var adapter: UserAdapter
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mDbRef: DatabaseReference
     private lateinit var currentUsername: TextView
     private lateinit var currentUserProfile: ImageView
+    private lateinit var btnLogout: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mAuth = FirebaseAuth.getInstance()
-        mDbRef = FirebaseDatabase.getInstance().getReference()
+        supportActionBar?.hide()
 
         userList = ArrayList()
         adapter = UserAdapter(this, userList)
@@ -46,42 +41,39 @@ class MainActivity : AppCompatActivity() {
 
         currentUsername = findViewById(R.id.currentusername)
         currentUserProfile = findViewById(R.id.currentuserprofile)
+        btnLogout = findViewById(R.id.btn_logout)
 
-        val currentUserId = mAuth.currentUser?.uid
+        btnLogout.setOnClickListener {
+            FirebaseHelper.auth.signOut()
+            startActivity(Intent(this@MainActivity, LogIn::class.java))
+            finish()
+        }
 
-        if (currentUserId != null) {
-            mDbRef.child("user").child(currentUserId).get().addOnSuccessListener {
-                val name = it.child("name").value as? String
+        val currentUserId = FirebaseHelper.auth.currentUser?.uid
+
+        currentUserId?.let { uid ->
+            FirebaseHelper.database.child("user").child(uid).get().addOnSuccessListener {
+                currentUsername.text = it.child("name").value as? String ?: "User"
                 val profileImage = it.child("profileImage").value as? String
-
-                currentUsername.text = name ?: "User"
-
-                if (!profileImage.isNullOrEmpty()) {
-                    Glide.with(this)
-                        .asBitmap()
-                        .load(decodeBase64(profileImage))
-                        .into(currentUserProfile)
-                } else {
-                    currentUserProfile.setImageResource(R.drawable.default_profile)
-                }
+                ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
+                    Glide.with(this).load(bitmap).into(currentUserProfile)
+                } ?: currentUserProfile.setImageResource(R.drawable.default_profile)
             }
         }
 
-        mDbRef.child("user").addValueEventListener(object: ValueEventListener {
+        FirebaseHelper.database.child("user").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
                 for (postSnapshot in snapshot.children) {
                     val currentUser = postSnapshot.getValue(User::class.java)
-                    if (mAuth.currentUser?.uid != currentUser?.uid) {
-                        userList.add(currentUser!!)
+                    if (FirebaseHelper.auth.currentUser?.uid != currentUser?.uid) {
+                        currentUser?.let { userList.add(it) }
                     }
                 }
                 adapter.notifyDataSetChanged()
             }
-
             override fun onCancelled(error: DatabaseError) {}
         })
-
     }
 
     override fun onCreatePanelMenu(featureId: Int, menu: Menu): Boolean {
@@ -91,17 +83,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.logout) {
-            mAuth.signOut()
-            val intent = Intent(this@MainActivity, LogIn::class.java)
+            FirebaseHelper.auth.signOut()
+            startActivity(Intent(this@MainActivity, LogIn::class.java))
             finish()
-            startActivity(intent)
             return true
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
-    private fun decodeBase64(encodedImage: String): Bitmap {
-        val decodedBytes = Base64.decode(encodedImage, Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-    }
-
 }

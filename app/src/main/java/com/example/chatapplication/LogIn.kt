@@ -6,15 +6,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
+import com.example.chatapplication.utils.FirebaseHelper
 
 class LogIn : AppCompatActivity() {
 
-    private lateinit var edtEmail : EditText
-    private lateinit var edtPassword : EditText
-    private lateinit var btnLogin : Button
-    private lateinit var btnSignup : Button
-    private lateinit var mAuth : FirebaseAuth
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var loginButton: Button
+    private lateinit var signupButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,46 +21,33 @@ class LogIn : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        mAuth = FirebaseAuth.getInstance()
+        emailEditText = findViewById(R.id.edt_Email)
+        passwordEditText = findViewById(R.id.edt_Password)
+        loginButton = findViewById(R.id.btn_login)
+        signupButton = findViewById(R.id.btn_signup)
 
-        edtEmail = findViewById(R.id.edt_Email)
-        edtPassword = findViewById(R.id.edt_Password)
-        btnLogin = findViewById(R.id.btn_login)
-        btnSignup = findViewById(R.id.btn_signup)
+        loginButton.setOnClickListener {
+            val email = emailEditText.text.toString().trim()
+            val password = passwordEditText.text.toString().trim()
 
-        btnSignup.setOnClickListener {
-            val intent = Intent(this, SignUp ::class.java)
-            startActivity(intent)
-
-        }
-
-        btnLogin.setOnClickListener {
-            val email = edtEmail.text.toString()
-            val password = edtPassword.text.toString()
-
-            login(email, password)
-        }
-
-    }
-
-    private fun login(email: String, password: String){
-        //logic for logging in
-        mAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // code for logging in user
-                    val intent = Intent(this@LogIn, MainActivity::class.java)
-                    finish()
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this@LogIn, "This user does not exist", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@LogIn, SignUp::class.java)
-                    finish()
-                    startActivity(intent)
-                }
-
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                FirebaseHelper.auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+            } else {
+                Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
             }
+        }
 
+        signupButton.setOnClickListener {
+            startActivity(Intent(this, SignUp::class.java))
+        }
     }
-
 }

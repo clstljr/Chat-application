@@ -7,29 +7,28 @@
        <View
            android:layout_marginTop="1dp"
            android:layout_width="match_parent"
-           android:layout_height="50dp"
+           android:layout_height="65dp"
            android:background="@drawable/bg_chatapp"/>
 
        <de.hdodenhof.circleimageview.CircleImageView
            android:id="@+id/txt_userprofile"
-           android:layout_width="40dp"
-           android:layout_height="40dp"
+           android:layout_width="55dp"
+           android:layout_height="55dp"
            android:src="@drawable/profile_icon"
            android:layout_alignParentLeft="true"
            android:scaleType="centerCrop"
            android:layout_margin="5dp" />
 
        <TextView
-           android:layout_marginTop="5dp"
            android:id="@+id/txt_name"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="jojo"
-           android:textSize="30sp"
-           android:textStyle="bold"
+           android:layout_marginLeft="65dp"
+           android:layout_marginTop="15dp"
+           android:text="User"
            android:textColor="@color/black"
-           android:layout_marginLeft="10dp"
-           android:layout_marginStart="55dp"/>
+           android:textSize="30sp"
+           android:textStyle="bold" />
 
 
 </RelativeLayout>
