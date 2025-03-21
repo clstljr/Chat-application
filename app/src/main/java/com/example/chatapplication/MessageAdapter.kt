@@ -65,7 +65,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>) 
 
     class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val receiveMessage: TextView = itemView.findViewById(R.id.txt_receive_message)
-        val receiveProfileImage: ImageView = itemView.findViewById(R.id.txt_userprofile) // Profile picture
+        val receiveProfileImage: ImageView = itemView.findViewById(R.id.txt_userprofile)
     }
 
     private fun decodeBase64(encodedImage: String): Bitmap {
