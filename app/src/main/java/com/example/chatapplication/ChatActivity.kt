@@ -65,14 +65,13 @@ class ChatActivity : AppCompatActivity() {
                 val name = it.child("name").value as? String
                 val profileImage = it.child("profileImage").value as? String
 
-                // ✅ Correctly update UI
                 senderUsername.text = name ?: "Unknown"
 
                 if (!profileImage.isNullOrEmpty()) {
                     Glide.with(this)
                         .asBitmap()
                         .load(decodeBase64(profileImage))
-                        .into(senderProfile) // ✅ Correct ImageView
+                        .into(senderProfile)
                 } else {
                     senderProfile.setImageResource(R.drawable.default_profile) // Default profile
                 }

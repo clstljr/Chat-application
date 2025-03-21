@@ -20,8 +20,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.util.Base64
 
-
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var userRecyclerView: RecyclerView
@@ -64,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                         .load(decodeBase64(profileImage))
                         .into(currentUserProfile)
                 } else {
-                    currentUserProfile.setImageResource(R.drawable.default_profile) // Default image
+                    currentUserProfile.setImageResource(R.drawable.default_profile)
                 }
             }
         }
