@@ -7,14 +7,51 @@
     android:layout_height="match_parent"
     tools:context=".ChatActivity">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:cardBackgroundColor="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_alignParentTop="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_goback"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/back_icon" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/senderuserprofile"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            app:civ_border_width="1dp"
+            android:layout_marginLeft="75dp"
+            android:layout_marginTop="7dp"
+            android:src="@drawable/default_profile"/>
+
+        <TextView
+            android:id="@+id/senderusername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="150dp"
+            android:text="Sender"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"/>
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="90dp"
         android:id="@+id/chatRecyclerView"
         android:layout_above="@id/linearLayout"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-         />
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -28,19 +65,19 @@
         <EditText
             android:id="@+id/messageBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:hint="Type a message"
             android:layout_marginLeft="5dp"
             android:paddingLeft="10dp"
             android:background="@drawable/message_box_background"
-            android:layout_weight="80"/>
+            android:layout_weight="120"/>
 
         <ImageView
             android:id="@+id/sentButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/send_button"
-            android:layout_weight="20"/>
+            android:layout_weight="0"/>
 
     </LinearLayout>
 

@@ -1,6 +1,8 @@
 package com.example.chatapplication
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +15,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.bumptech.glide.Glide
+import android.widget.ImageView
+import android.widget.TextView
+import android.util.Base64
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: UserAdapter
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
+    private lateinit var currentUsername: TextView
+    private lateinit var currentUserProfile: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +45,29 @@ class MainActivity : AppCompatActivity() {
         userRecyclerView = findViewById(R.id.userRecyclerView)
         userRecyclerView.layoutManager = LinearLayoutManager(this)
         userRecyclerView.adapter = adapter
+
+        currentUsername = findViewById(R.id.currentusername)
+        currentUserProfile = findViewById(R.id.currentuserprofile)
+
+        val currentUserId = mAuth.currentUser?.uid
+
+        if (currentUserId != null) {
+            mDbRef.child("user").child(currentUserId).get().addOnSuccessListener {
+                val name = it.child("name").value as? String
+                val profileImage = it.child("profileImage").value as? String
+
+                currentUsername.text = name ?: "User"
+
+                if (!profileImage.isNullOrEmpty()) {
+                    Glide.with(this)
+                        .asBitmap()
+                        .load(decodeBase64(profileImage))
+                        .into(currentUserProfile)
+                } else {
+                    currentUserProfile.setImageResource(R.drawable.default_profile) // Default image
+                }
+            }
+        }
 
         mDbRef.child("user").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -68,4 +101,9 @@ class MainActivity : AppCompatActivity() {
         }
         return true
     }
+    private fun decodeBase64(encodedImage: String): Bitmap {
+        val decodedBytes = Base64.decode(encodedImage, Base64.DEFAULT)
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+    }
+
 }

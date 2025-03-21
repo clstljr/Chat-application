@@ -5,8 +5,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/txt_userprofile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/profile_icon"
         android:layout_alignParentLeft="true"
         android:scaleType="centerCrop"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="This is receive message"
-            android:textSize="16sp" />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
