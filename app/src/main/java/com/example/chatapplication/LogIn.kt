@@ -54,7 +54,10 @@ class LogIn : AppCompatActivity() {
                     finish()
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this@LogIn, "User does not exist", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LogIn, "This user does not exist", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@LogIn, SignUp::class.java)
+                    finish()
+                    startActivity(intent)
                 }
 
             }

@@ -24,6 +24,7 @@ class SignUp : AppCompatActivity() {
     private lateinit var imgProfile: ImageView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
+    private lateinit var btnGoback: ImageView
 
     private var encodedImage: String? = null
 
@@ -41,6 +42,7 @@ class SignUp : AppCompatActivity() {
         btnSignup = findViewById(R.id.btn_signup)
         btnUploadImage = findViewById(R.id.btnUploadImage)
         imgProfile = findViewById(R.id.app_logo)
+        btnGoback = findViewById(R.id.btn_goback)
 
         btnUploadImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -54,6 +56,11 @@ class SignUp : AppCompatActivity() {
             val password = edtPassword.text.toString()
 
             signup(name, email, password, encodedImage)
+        }
+
+        btnGoback.setOnClickListener {
+            val intent = Intent(this, LogIn ::class.java)
+            startActivity(intent)
         }
     }
 
@@ -83,7 +90,8 @@ class SignUp : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val uid = mAuth.currentUser?.uid!!
                     addUserToDatabase(name, email, uid, profileImage)
-                    startActivity(Intent(this@SignUp, MainActivity::class.java))
+                    startActivity(Intent(this@SignUp, LogIn::class.java))
+                    Toast.makeText(this@SignUp, "Kindly please login your new account", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@SignUp, "Some error occurred", Toast.LENGTH_SHORT).show()
                 }
