@@ -1,5 +1,6 @@
 package com.example.chatapplication
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -44,10 +45,25 @@ class MainActivity : AppCompatActivity() {
         btnLogout = findViewById(R.id.btn_logout)
 
         btnLogout.setOnClickListener {
-            FirebaseHelper.auth.signOut()
-            startActivity(Intent(this@MainActivity, LogIn::class.java))
-            finish()
+            val alertMessage = AlertDialog.Builder(this)
+
+            alertMessage.setTitle("Logout")
+            alertMessage.setMessage("Are you sure you want to log out?")
+            alertMessage.setCancelable(false)
+
+            alertMessage.setPositiveButton("Yes") { _, _ ->
+                FirebaseHelper.auth.signOut()
+                startActivity(Intent(this, LogIn::class.java))
+                finish()
+            }
+
+            alertMessage.setNeutralButton("No") { dialogInterface, _ ->
+                dialogInterface.cancel()
+            }
+
+            alertMessage.create().show()
         }
+
 
         val currentUserId = FirebaseHelper.auth.currentUser?.uid
 
