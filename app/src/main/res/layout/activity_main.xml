@@ -19,40 +19,51 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/btn_background"/>
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:text="LOG OUT"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/btn_background"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/currentuserprofile"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/default_profile"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="44dp"
-        tools:layout_editor_absoluteY="29dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/currentusername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="60dp"
         android:text="User"
         android:textColor="@color/white"
         android:textSize="40sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="183dp"
-        tools:layout_editor_absoluteY="29dp" />
+        app:layout_constraintStart_toEndOf="@+id/currentuserprofile"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="190dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/user_layout" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
