@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".SignUp">
 
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/btn_goback"
         android:layout_width="70dp"
