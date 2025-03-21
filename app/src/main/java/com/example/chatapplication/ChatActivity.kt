@@ -23,7 +23,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var btnGoback: ImageView
     private lateinit var senderProfile: ImageView
     private lateinit var senderUsername: TextView
-
+//o
     private var receiverRoom: String? = null
     private var senderRoom: String? = null
 
