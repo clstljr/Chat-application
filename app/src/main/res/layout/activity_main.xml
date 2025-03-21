@@ -5,43 +5,29 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/yapyapbg_chatapp"
+    android:background="@drawable/newyapyapbg_chatapp"
     tools:context=".MainActivity">
 
-
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="LOG OUT"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/btn_background"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/currentuserprofile"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:src="@drawable/default_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="29dp" />
 
     <TextView
         android:id="@+id/currentusername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
         android:text="User"
         android:textColor="@color/white"
         android:textSize="40sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/currentuserprofile"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="183dp"
+        tools:layout_editor_absoluteY="29dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userRecyclerView"
@@ -53,7 +39,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/user_layout" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
