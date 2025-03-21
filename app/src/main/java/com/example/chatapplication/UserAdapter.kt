@@ -36,7 +36,7 @@ class UserAdapter(private val context: Context, private val userList: ArrayList<
         } else {
             holder.imgProfile.setImageResource(R.drawable.default_profile)
         }
-
+//hjhhjhj
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java).apply {
                 putExtra("name", currentUser.name)
