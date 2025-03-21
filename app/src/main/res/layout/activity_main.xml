@@ -5,12 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/yapyapbg_chatapp"
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        app:cardBackgroundColor="@color/yellow"
+        app:cardBackgroundColor="@color/mustard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,7 +21,6 @@
             android:id="@+id/currentuserprofile"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            app:civ_border_width="1dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="7dp"
             android:src="@drawable/default_profile"/>
@@ -41,7 +41,7 @@
         android:id="@+id/userRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="165dp"
+        android:layout_marginTop="280dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
