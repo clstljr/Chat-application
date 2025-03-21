@@ -8,6 +8,16 @@
     android:background="@drawable/newyapyapbg_chatapp"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="LOG OUT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/btn_background"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/currentuserprofile"
