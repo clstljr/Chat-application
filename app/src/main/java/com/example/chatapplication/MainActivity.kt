@@ -20,19 +20,19 @@ import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var userRecyclerView: RecyclerView
-    private lateinit var userList: ArrayList<User>
-    private lateinit var adapter: UserAdapter
-    private lateinit var currentUsername: TextView
-    private lateinit var currentUserProfile: ImageView
-    private lateinit var btnLogout: Button
+    private lateinit var userRecyclerView: RecyclerView // List of users
+    private lateinit var userList: ArrayList<User> // Stores user data
+    private lateinit var adapter: UserAdapter // Adapter to display users
+    private lateinit var currentUsername: TextView // Displays current user's name
+    private lateinit var currentUserProfile: ImageView // Displays current user's profile picture
+    private lateinit var btnLogout: Button // Logout button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         supportActionBar?.hide()
 
+        // Initialize UI elements
         userList = ArrayList()
         adapter = UserAdapter(this, userList)
 
@@ -44,59 +44,59 @@ class MainActivity : AppCompatActivity() {
         currentUserProfile = findViewById(R.id.currentuserprofile)
         btnLogout = findViewById(R.id.btn_logout)
 
-        btnLogout.setOnClickListener {
-            val alertMessage = AlertDialog.Builder(this)
-
-            alertMessage.setTitle("Logout")
-            alertMessage.setMessage("Are you sure you want to log out?")
-            alertMessage.setCancelable(false)
-
-            alertMessage.setPositiveButton("Yes") { _, _ ->
-                FirebaseHelper.auth.signOut()
-                startActivity(Intent(this, LogIn::class.java))
-                finish()
-            }
-
-            alertMessage.setNeutralButton("No") { dialogInterface, _ ->
-                dialogInterface.cancel()
-            }
-
-            alertMessage.create().show()
-        }
-
-
+        // Fetch current user's profile and name from Firebase
         val currentUserId = FirebaseHelper.auth.currentUser?.uid
-
         currentUserId?.let { uid ->
             FirebaseHelper.database.child("user").child(uid).get().addOnSuccessListener {
                 currentUsername.text = it.child("name").value as? String ?: "User"
                 val profileImage = it.child("profileImage").value as? String
                 ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
-                    Glide.with(this).load(bitmap).into(currentUserProfile)
-                } ?: currentUserProfile.setImageResource(R.drawable.default_profile)
+                    Glide.with(this).load(bitmap).into(currentUserProfile) // Load profile image
+                } ?: currentUserProfile.setImageResource(R.drawable.default_profile) // Default image
             }
         }
 
+        // Load user list from Firebase
         FirebaseHelper.database.child("user").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
                 for (postSnapshot in snapshot.children) {
                     val currentUser = postSnapshot.getValue(User::class.java)
                     if (FirebaseHelper.auth.currentUser?.uid != currentUser?.uid) {
-                        currentUser?.let { userList.add(it) }
+                        currentUser?.let { userList.add(it) } // Add all users except current user
                     }
                 }
-                adapter.notifyDataSetChanged()
+                adapter.notifyDataSetChanged() // Refresh user list
             }
             override fun onCancelled(error: DatabaseError) {}
         })
+
+        // Logout functionality
+        btnLogout.setOnClickListener {
+            val alertMessage = AlertDialog.Builder(this)
+            alertMessage.setTitle("Logout")
+            alertMessage.setMessage("Are you sure you want to log out?")
+            alertMessage.setCancelable(false)
+
+            alertMessage.setPositiveButton("Yes") { _, _ ->
+                FirebaseHelper.auth.signOut()
+                startActivity(Intent(this, LogIn::class.java)) // Redirect to login screen
+                finish()
+            }
+            alertMessage.setNeutralButton("No") { dialogInterface, _ ->
+                dialogInterface.cancel()
+            }
+            alertMessage.create().show()
+        }
     }
 
+    // Inflate menu options (for logout)
     override fun onCreatePanelMenu(featureId: Int, menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return super.onCreatePanelMenu(featureId, menu)
     }
 
+    // Handle menu item selection (logout)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.logout) {
             FirebaseHelper.auth.signOut()

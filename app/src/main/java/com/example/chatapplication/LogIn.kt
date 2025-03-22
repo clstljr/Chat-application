@@ -10,32 +10,34 @@ import com.example.chatapplication.utils.FirebaseHelper
 
 class LogIn : AppCompatActivity() {
 
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var loginButton: Button
-    private lateinit var signupButton: Button
+    private lateinit var emailEditText: EditText // Input field for email
+    private lateinit var passwordEditText: EditText // Input field for password
+    private lateinit var loginButton: Button // Button to log in
+    private lateinit var signupButton: Button // Button to navigate to SignUp page
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
-
         supportActionBar?.hide()
 
+        // Initialize UI elements
         emailEditText = findViewById(R.id.edt_Email)
         passwordEditText = findViewById(R.id.edt_Password)
         loginButton = findViewById(R.id.btn_login)
         signupButton = findViewById(R.id.btn_signup)
 
+        // Handle login button click
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
+                // Authenticate the user with Firebase
                 FirebaseHelper.auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, MainActivity::class.java))
+                            startActivity(Intent(this, MainActivity::class.java)) // Navigate to main screen
                             finish()
                         } else {
                             Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
@@ -46,6 +48,7 @@ class LogIn : AppCompatActivity() {
             }
         }
 
+        // Navigate to SignUp activity when signup button is clicked
         signupButton.setOnClickListener {
             startActivity(Intent(this, SignUp::class.java))
         }
