@@ -24,6 +24,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var messageList: ArrayList<Message> // Stores messages in the chat
     private lateinit var senderProfile: ImageView // Displays the receiver's profile picture
     private lateinit var senderUsername: TextView // Displays the receiver's username
+    private lateinit var btnGoBack: ImageView // Button to return to MainActivity
 
     private var receiverRoom: String? = null // Room identifier for the receiver
     private var senderRoom: String? = null // Room identifier for the sender
@@ -46,11 +47,18 @@ class ChatActivity : AppCompatActivity() {
         sendButton = findViewById(R.id.sentButton)
         senderProfile = findViewById(R.id.senderuserprofile)
         senderUsername = findViewById(R.id.senderusername)
+        btnGoBack = findViewById(R.id.btn_goback)
         messageList = ArrayList()
         messageAdapter = MessageAdapter(this, messageList)
 
         chatRecyclerView.layoutManager = LinearLayoutManager(this) // Display messages in order
         chatRecyclerView.adapter = messageAdapter // Attach the adapter
+
+        // Go back to MainActivity when the back button is clicked
+        btnGoBack.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
         // Load receiver's profile and username from Firebase
         receiverUid?.let { uid ->

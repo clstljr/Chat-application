@@ -3,8 +3,6 @@ package com.example.chatapplication
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -88,22 +86,5 @@ class MainActivity : AppCompatActivity() {
             }
             alertMessage.create().show()
         }
-    }
-
-    // Inflate menu options (for logout)
-    override fun onCreatePanelMenu(featureId: Int, menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return super.onCreatePanelMenu(featureId, menu)
-    }
-
-    // Handle menu item selection (logout)
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.logout) {
-            FirebaseHelper.auth.signOut()
-            startActivity(Intent(this@MainActivity, LogIn::class.java))
-            finish()
-            return true
-        }
-        return super.onOptionsItemSelected(item)
     }
 }
