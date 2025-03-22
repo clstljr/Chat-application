@@ -20,7 +20,7 @@ class LogIn : AppCompatActivity() {
         setContentView(R.layout.activity_log_in)
         supportActionBar?.hide()
 
-        // Initialize UI elements
+        // Initialize UI elements jjk
         emailEditText = findViewById(R.id.edt_Email)
         passwordEditText = findViewById(R.id.edt_Password)
         loginButton = findViewById(R.id.btn_login)
