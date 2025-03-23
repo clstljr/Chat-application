@@ -52,7 +52,7 @@ class ChatActivity : AppCompatActivity() {
         messageAdapter = MessageAdapter(this, messageList)
 
         chatRecyclerView.layoutManager = LinearLayoutManager(this) // Display messages in order
-        chatRecyclerView.adapter = messageAdapter // Attach the adapter
+        chatRecyclerView.adapter = messageAdapter
 
         // Go back to MainActivity when the back button is clicked
         btnGoBack.setOnClickListener {
@@ -66,8 +66,8 @@ class ChatActivity : AppCompatActivity() {
                 senderUsername.text = it.child("name").value as? String ?: "Unknown"
                 val profileImage = it.child("profileImage").value as? String
                 ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
-                    Glide.with(this).load(bitmap).into(senderProfile) // Load image if available
-                } ?: senderProfile.setImageResource(R.drawable.default_profile) // Set default image
+                    Glide.with(this).load(bitmap).into(senderProfile)
+                } ?: senderProfile.setImageResource(R.drawable.default_profile)
             }
         }
 
@@ -103,7 +103,7 @@ class ChatActivity : AppCompatActivity() {
                         }
                     }
                 }
-                messageBox.setText("") // Clear input field after sending message
+                messageBox.setText("")
             }
         }
     }

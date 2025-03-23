@@ -4,14 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Base64
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import java.io.ByteArrayOutputStream
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.io.ByteArrayOutputStream
 
 class SignUp : AppCompatActivity() {
 
@@ -44,8 +46,6 @@ class SignUp : AppCompatActivity() {
         imgProfile = findViewById(R.id.app_logo)
         btnGoback = findViewById(R.id.btn_goback)
 
-        imgProfile.setImageResource(R.drawable.default_profile) // Set default profile image
-
         // Open image picker when upload button is clicked
         btnUploadImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -55,11 +55,16 @@ class SignUp : AppCompatActivity() {
 
         // Handle signup button click
         btnSignup.setOnClickListener {
-            val name = edtName.text.toString()
-            val email = edtEmail.text.toString()
-            val password = edtPassword.text.toString()
+            val name = edtName.text.toString().trim()
+            val email = edtEmail.text.toString().trim()
+            val password = edtPassword.text.toString().trim()
 
-            signup(name, email, password, encodedImage) // Call signup function
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            signup(name, email, password, encodedImage)
         }
 
         // Navigate back to login screen
@@ -73,8 +78,8 @@ class SignUp : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-            val imageUri = data?.data
-            val inputStream = contentResolver.openInputStream(imageUri!!)
+            val imageUri = data?.data ?: return
+            val inputStream = contentResolver.openInputStream(imageUri) ?: return
             val bitmap = BitmapFactory.decodeStream(inputStream)
 
             imgProfile.setImageBitmap(bitmap) // Display selected image
@@ -86,18 +91,16 @@ class SignUp : AppCompatActivity() {
     private fun encodeImage(bitmap: Bitmap): String {
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        val byteArray = outputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
     }
 
     // Store default profile image as base64 if user does not upload one
     private fun encodeDrawableToBase64(drawableId: Int): String {
-        val drawable = resources.getDrawable(drawableId, null)
-        val bitmap = (drawable as android.graphics.drawable.BitmapDrawable).bitmap
+        val drawable = ContextCompat.getDrawable(this, drawableId) ?: return ""
+        val bitmap = (drawable as? BitmapDrawable)?.bitmap ?: return ""
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        val byteArray = outputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
     }
 
     // Create a new user account
@@ -109,10 +112,10 @@ class SignUp : AppCompatActivity() {
                     val finalProfileImage = profileImage ?: encodeDrawableToBase64(R.drawable.default_profile)
 
                     addUserToDatabase(name, email, uid, finalProfileImage) // Store user details in database
-                    startActivity(Intent(this@SignUp, LogIn::class.java)) // Redirect to login
-                    Toast.makeText(this@SignUp, "Kindly log in to your new account", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Signup successful! Please log in.", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, LogIn::class.java))
                 } else {
-                    Toast.makeText(this@SignUp, "Some error occurred", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Signup failed: ${task.exception?.localizedMessage}", Toast.LENGTH_SHORT).show()
                 }
             }
     }

@@ -4,10 +4,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-/**
- * FirebaseHelper is a utility object that provides access to Firebase Authentication
- * and Firebase Realtime Database, making it easier to interact with Firebase services.
- */
+// Provides access to Firebase Authentication and Firebase Realtime Database.
+
 object FirebaseHelper {
 
     // Firebase Authentication instance, used for user authentication (login, signup, logout)

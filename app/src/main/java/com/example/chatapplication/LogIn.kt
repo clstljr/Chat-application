@@ -20,13 +20,11 @@ class LogIn : AppCompatActivity() {
         setContentView(R.layout.activity_log_in)
         supportActionBar?.hide()
 
-        // Initialize UI elements jjk
         emailEditText = findViewById(R.id.edt_Email)
         passwordEditText = findViewById(R.id.edt_Password)
         loginButton = findViewById(R.id.btn_login)
         signupButton = findViewById(R.id.btn_signup)
 
-        // Handle login button click
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
@@ -37,7 +35,7 @@ class LogIn : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, MainActivity::class.java)) // Navigate to main screen
+                            startActivity(Intent(this, MainActivity::class.java))
                             finish()
                         } else {
                             Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()

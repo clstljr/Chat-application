@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
 
-        // Initialize UI elements
         userList = ArrayList()
         adapter = UserAdapter(this, userList)
 
@@ -49,8 +48,8 @@ class MainActivity : AppCompatActivity() {
                 currentUsername.text = it.child("name").value as? String ?: "User"
                 val profileImage = it.child("profileImage").value as? String
                 ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
-                    Glide.with(this).load(bitmap).into(currentUserProfile) // Load profile image
-                } ?: currentUserProfile.setImageResource(R.drawable.default_profile) // Default image
+                    Glide.with(this).load(bitmap).into(currentUserProfile)
+                } ?: currentUserProfile.setImageResource(R.drawable.default_profile)
             }
         }
 
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
             alertMessage.setPositiveButton("Yes") { _, _ ->
                 FirebaseHelper.auth.signOut()
-                startActivity(Intent(this, LogIn::class.java)) // Redirect to login screen
+                startActivity(Intent(this, LogIn::class.java))
                 finish()
             }
             alertMessage.setNeutralButton("No") { dialogInterface, _ ->
