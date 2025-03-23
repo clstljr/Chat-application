@@ -25,7 +25,6 @@ class UserAdapter(private val context: Context, private val userList: ArrayList<
     }
 
     // Returns the total number of users in the list.
-
     override fun getItemCount(): Int = userList.size
 
     //Binds user data to the ViewHolder, including name and profile image.
@@ -37,7 +36,7 @@ class UserAdapter(private val context: Context, private val userList: ArrayList<
         val profileImage = currentUser.profileImage
         ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
             Glide.with(context).load(bitmap).into(holder.imgProfile)
-        } ?: holder.imgProfile.setImageResource(R.drawable.default_profile)
+        }
 
         // Open ChatActivity when a user is clicked
         holder.itemView.setOnClickListener {

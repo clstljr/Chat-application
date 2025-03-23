@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 val profileImage = it.child("profileImage").value as? String
                 ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
                     Glide.with(this).load(bitmap).into(currentUserProfile)
-                } ?: currentUserProfile.setImageResource(R.drawable.default_profile)
+                }
             }
         }
 

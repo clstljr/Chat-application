@@ -67,7 +67,7 @@ class ChatActivity : AppCompatActivity() {
                 val profileImage = it.child("profileImage").value as? String
                 ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
                     Glide.with(this).load(bitmap).into(senderProfile)
-                } ?: senderProfile.setImageResource(R.drawable.default_profile)
+                }
             }
         }
 

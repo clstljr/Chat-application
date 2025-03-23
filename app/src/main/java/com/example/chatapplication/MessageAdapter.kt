@@ -53,14 +53,14 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
         }
     }
 
-    // Displays the sender's profile image from Firebase, or sets a default if unavailable.
+    // Displays the sender's profile image from Firebase.
     private fun loadProfileImage(imageView: ImageView, senderUid: String?) {
         senderUid?.let { uid ->
             FirebaseHelper.database.child("user").child(uid).get().addOnSuccessListener {
                 val profileImage = it.child("profileImage").value as? String
                 ImageUtils.decodeBase64(profileImage)?.let { bitmap ->
                     Glide.with(context).load(bitmap).into(imageView)
-                } ?: imageView.setImageResource(R.drawable.default_profile)
+                }
             }
         }
     }
